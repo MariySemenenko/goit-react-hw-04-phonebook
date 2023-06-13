@@ -1,44 +1,40 @@
 
-import { Component } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { Form } from '../StyledApp.styled';
 
-export class ContactForm extends Component {
-  //тут зберігається імя та номер
-  state = {
-    name: '',
-    number: '',
-  };
+export const ContactForm = ({ onSubmitData }) => {
+  const [data, setData] = useState({ name: '', number: '' })
+  //тут зберігається імя та номерvscode-file://vscode-app/c:/Users/user/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-sandbox/workbench/workbench.html
 
-  handleChange = ({ currentTarget }) => {
+
+  const handleChange = ({ currentTarget }) => {
     const { name, value } = currentTarget; //отримую доступ до значення поля за допомогою currentTarget
-    this.setState({ [name]: value }); //оновлюю ключ у стейті за допомогою динамічного ключа
+   setData(prevData => ({...prevData, [name]: value })); //оновлюю ключ у стейті за допомогою динамічного ключа
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const { name, number } = this.state;
-    const { onSubmitData } = this.props;
+
+  
      //тут створюється новий об'єкт newContact
     const newContact = {
 
       id: nanoid(),
-      name,
-      number,
+     ...data, 
     };
     onSubmitData(newContact); //передаю колбекom (App addContact) для нового контакту та
     //скидання значень до початкових.
 
-    this.setState({ name: '', number: '' });
+    setData({ name: '', number: '' });
   };
 
-  render() {
-    const { name, number } = this.state;
-
+  const { name, number } = data
+ 
     return (
       <>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <label>
             Name
             <input
@@ -48,7 +44,7 @@ export class ContactForm extends Component {
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
               required
               value={name}
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </label>
 
@@ -61,7 +57,7 @@ export class ContactForm extends Component {
               title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
               required
               value={number}
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </label>
 
@@ -70,7 +66,7 @@ export class ContactForm extends Component {
       </>
     );
   }
-}
+
 
 ContactForm.propType = {
   onSubmitData: PropTypes.func.isRequired,
