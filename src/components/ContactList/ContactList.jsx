@@ -1,4 +1,3 @@
-
 import PropTypes from 'prop-types';
 import { Ul } from '../StyledApp.styled';
 

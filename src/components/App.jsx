@@ -51,13 +51,10 @@ export const App = () => {
   };
 
   const deleteContacts = id => {
-    setContacts(contacts.filter(contact => contact.id !== id))
-   
+    setContacts(contacts.filter(contact => contact.id !== id));
   };
 
-  
   return (
-  
     // функція onSubmitData передається як властивість для додавання нового контакту
     <Div>
       <ContactForm onSubmitData={addContact} />
